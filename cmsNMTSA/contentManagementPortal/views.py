@@ -39,3 +39,25 @@ def search_content(request, query):
         videos = list(chain(VideoContent.objects.filter(tags__icontains=query), VideoContent.objects.filter(category__name__icontains=query)))
 
 
+
+
+@api_view(["POST"])
+def create_video(request):
+    serializer = VideoLoadSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def create_article(request):
+    serializer = ArticleLoadSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+=
