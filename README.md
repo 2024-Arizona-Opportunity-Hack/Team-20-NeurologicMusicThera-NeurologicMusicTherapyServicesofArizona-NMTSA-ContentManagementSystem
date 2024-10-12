@@ -11,9 +11,11 @@
 @Aaditya Jindal (on Slack)
 
 ## Team "Team-20"
-- [Team Member 1](GitHub profile link)
-- [Team Member 2](GitHub profile link)
-- [Team Member 3](GitHub profile link)
+-  Ansh(https://github.com/ansht9)
+-  Ayaan Panda(https://github.com/ayaanp-dev)
+- Aryan Patel(https://github.com/mmuskaryyone)
+
+  
 <!-- Add all team members -->
 
 ## Project Overview
