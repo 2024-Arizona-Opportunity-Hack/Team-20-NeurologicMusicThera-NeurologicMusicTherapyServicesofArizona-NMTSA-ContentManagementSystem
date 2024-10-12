@@ -14,7 +14,7 @@
 -  Ansh(https://github.com/ansht9)
 -  Ayaan Panda(https://github.com/ayaanp-dev)
 - Aryan Patel(https://github.com/mmuskaryyone)
-
+- Lukas(https://github.com/Nerozd)
   
 <!-- Add all team members -->
 
