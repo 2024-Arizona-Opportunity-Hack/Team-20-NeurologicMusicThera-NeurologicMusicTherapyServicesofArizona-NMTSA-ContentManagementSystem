@@ -14,6 +14,20 @@ from docx import Document
 import PyPDF2
 # Create your views here.
 
+
+@api_view(["GET"])
+def load_landing(request):
+    user_group = AccessGroup.objects.get(group_name="public")
+    videos = VideoContent.objects.get(access_groups=user_group.id)
+    articles = Article.objects.get(access_groups=user_group.id)
+    vid_serializer = VideosLoadSerializer(videos, many=True)
+    article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
+    data = {
+        'videos': vid_serializer.data,
+        'articles': article_serializer.data
+    }
+    return Response(data, status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 def load_client_dashboard(request):
     user_groups = AccessGroup.objects.get(users=request.user.id)

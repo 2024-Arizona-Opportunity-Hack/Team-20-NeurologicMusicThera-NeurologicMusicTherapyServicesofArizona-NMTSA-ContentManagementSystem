@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from contentManagementPortal.views import load_landing
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cms/', include("contentManagementPortal.urls")),
-    path('accounts/', include("accounts.urls"))
+    path('accounts/', include("accounts.urls")),
+    path('', load_landing, name="loadPublicContent")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
