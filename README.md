@@ -24,13 +24,6 @@ Team ByteForce aims to create a content management software for a non profit org
   A challenge that NMSTA faced was organizing their Google Drive as they simply had so many files that it seemed impossible to track every single one of them and distribute them to different types of users. As a result,
   they were looking for a software that could organize their chaotic google Drive and allow them to send their files to any user with ease.
 
-
-## Tech Stack
-- Frontend: 
-- Backend: 
-- Database: 
-- APIs:
-
 ## What does it do?
 - Content Management
 - Automative Tagging
