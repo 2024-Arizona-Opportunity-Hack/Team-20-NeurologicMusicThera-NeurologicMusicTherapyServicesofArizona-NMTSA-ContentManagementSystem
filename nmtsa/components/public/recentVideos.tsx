@@ -4,9 +4,8 @@ import { getCsrfToken } from "@/app/utils/sendcsrf";
 
 
 async function fetchTopVideos() {
-  const csrfToken = await getCsrfToken();
 
-  const response = await fetch("http://127.0.0.1:8000/cms/dashboard/user",{
+  const response = await fetch("http://127.0.0.1:8000/",{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

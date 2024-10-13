@@ -28,7 +28,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const pw = data.get('password');
     const full = {username: un, password: pw};
 
-    fetch("http://localhost:8000/accounts/login", {
+    await fetch("http://localhost:8000/accounts/login", {
         method: "POST",
         body: JSON.stringify(full),
         headers: {
@@ -55,9 +55,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Input
               id="username"
               placeholder="myusername123"
-              type="email"
+              type="text"
               autoCapitalize="none"
-              autoComplete="email"
+              autoComplete=""
               autoCorrect="off"
               disabled={isLoading}
             />
