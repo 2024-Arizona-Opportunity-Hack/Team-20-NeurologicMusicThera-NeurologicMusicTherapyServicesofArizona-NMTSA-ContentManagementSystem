@@ -8,15 +8,16 @@ from .serializers import VideosLoadSerializer, ArticleLoadSerializer
 from django.shortcuts import render
 import json
 from django.contrib.auth.models import User
-from contentManagementPortal.AI.textClassifierLlama3 import classify_text
-from contentManagementPortal.AI.videoTranscriber import get_transcripts
-from docx import Document
-import PyPDF2
+#from contentManagementPortal.AI.textClassifierLlama3 import classify_text
+#from contentManagementPortal.AI.videoTranscriber import get_transcripts
+#from docx import Document
+#import PyPDF2
 # Create your views here.
 
 @api_view(["GET"])
 def load_client_dashboard(request):
-    user_groups = AccessGroup.objects.get(users=request.user.id)
+    print(request.user)
+    user_groups = AccessGroup.objects.filter(users=request.user.id).first()
     if user_groups.group_name == "consumer":
         profile = UserProfile.objects.get(user=request.user)
         videos = VideoContent.objects.filter(access_groups=user_groups.id, category=profile.treatment_category).order_by("-id")
@@ -214,4 +215,3 @@ def create_article(request):
         else:
             return render(request, "create_video.html")
     return Response(json.dumps({"error": "You are not authorized!"}), status=status.HTTP_403_FORBIDDEN)
-

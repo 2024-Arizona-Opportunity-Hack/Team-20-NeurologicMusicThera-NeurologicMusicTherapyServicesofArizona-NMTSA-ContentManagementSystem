@@ -14,7 +14,7 @@ class Category(models.Model):
 class AccessGroup(models.Model):
     group_name = models.CharField(max_length=400, unique=True)
     users = ManyToManyField(User)
-    permissions_description = models.CharField(max_length=500)
+    permissions_description = models.CharField(max_length=500, default="No permissions description available", null=True, blank=True)
 
     def __str__(self):
         return self.group_name
