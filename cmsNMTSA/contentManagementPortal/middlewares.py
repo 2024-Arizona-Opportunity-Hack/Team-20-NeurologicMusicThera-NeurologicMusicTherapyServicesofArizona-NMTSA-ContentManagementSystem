@@ -34,7 +34,7 @@ def check_admin_group(get_response):
         path = request.path_info
         if any(url.match(path) for url in check_urls):
             try:
-                group = AccessGroup.objects.get(users=request.user, name="admin")
+                group = AccessGroup.objects.get(users=request.user, group_name="admin")
                 response = get_response(request)
                 return response
             except AccessGroup.ObjectDoesNotExist:
@@ -53,7 +53,7 @@ def check_private_group(get_response):
         path = request.path_info
         if any(url.match(path) for url in check_urls):
             try:
-                group = AccessGroup.objects.get(Q(users=request.user) & Q(name__in=["admin", "private"]))
+                group = AccessGroup.objects.get(Q(users=request.user) & Q(group_name__in=["admin", "private"]))
                 response = get_response(request)
                 return response
             except AccessGroup.ObjectDoesNotExist:

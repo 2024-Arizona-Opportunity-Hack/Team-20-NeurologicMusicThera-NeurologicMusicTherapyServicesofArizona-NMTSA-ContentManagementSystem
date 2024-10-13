@@ -65,7 +65,6 @@ def load_admin_dashboard(request):
     }
     return Response(data, status=status.HTTP_200_OK)
 
-
 @api_view(["PUT", "DELETE"])
 @parser_classes([MultiPartParser, FormParser])
 def update_video(request):
@@ -99,7 +98,6 @@ def update_video(request):
             return Response({"message":"video updated"}, status=status.HTTP_200_OK)
         except VideoContent.DoesNotExist:
             return Response({"message": "video not found"}, status=status.HTTP_404_NOT_FOUND)
-
 
 @api_view(["PUT", "DELETE"])
 @parser_classes([MultiPartParser, FormParser])
