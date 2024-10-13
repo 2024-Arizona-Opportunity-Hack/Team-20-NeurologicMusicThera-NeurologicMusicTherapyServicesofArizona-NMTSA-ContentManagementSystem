@@ -17,8 +17,8 @@ import PyPDF2
 @api_view(["GET"])
 def load_client_dashboard(request):
     user_groups = AccessGroup.objects.get(users=request.user.id)
-    videos = VideoContent.objects.filter(access_groups=user_groups.id).order_by["-id"]
-    articles = Article.objects.filter(access_groups=user_groups.id).order_by["-id"]
+    videos = VideoContent.objects.filter(access_groups=user_groups.id).order_by("-id")
+    articles = Article.objects.filter(access_groups=user_groups.id).order_by("-id")
     vid_serializer = VideosLoadSerializer(videos, many=True)
     article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
     data = {
@@ -29,15 +29,15 @@ def load_client_dashboard(request):
 
 @api_view(["GET"])
 def load_admin_dashboard(request):
-    videos = VideoContent.objects.all().order_by["-id"]
-    articles = Article.objects.all().order_by["-id"]
+    videos = VideoContent.objects.all().order_by("-id")
+    articles = Article.objects.all().order_by("-id")
     vid_serializer = VideosLoadSerializer(videos, many=True)
     article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
     data = {
         'videos': vid_serializer.data,
         'articles': article_serializer.data,
-        'users': User.objects.all(),
-        'groups': AccessGroup.objects.all()
+        'users': [{'id': user.id, 'username': user.username, 'email': user.email} for user in User.objects.all()],
+        'groups': list(AccessGroup.objects.values('id', 'group_name'))
     }
     return Response(data, status=status.HTTP_200_OK)
 
@@ -71,7 +71,7 @@ def filter_content(request, query):'''
 @api_view(["POST", "GET"])
 @parser_classes([MultiPartParser, FormParser])
 def create_video(request):
-    user_group = AccessGroup.objects.get(users=request.user)
+    user_group = AccessGroup.objects.get(users=request.user).group_name
     if user_group == "admin" or user_group == "private":
         if request.method == "POST":
             form_data = json.loads(request.body)
@@ -99,7 +99,8 @@ def create_video(request):
 @api_view(["POST", "GET"])
 @parser_classes([MultiPartParser, FormParser])
 def create_article(request):
-    user_group = AccessGroup.objects.get(users=request.user)
+    user_group = AccessGroup.objects.get(users=request.user).group_name
+    print(user_group)
     if user_group == "admin" or user_group == "private":
         if request.method == "POST":
             form_data = json.loads(request.body)
