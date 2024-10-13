@@ -1,38 +1,38 @@
+import { Video, columns } from "@/components/admin/columns";
+import { DataTable } from "@/components/admin/data-table";
 import { Navbar } from "@/components/Navbar";
-import { TableVideos } from "@/components/admin/TableVideos";
 
-export default function AdminDashboard() {
-    const videos = [
-        {
-            title: 'Video 1',
-            tags: ['tag1', 'tag2'],
-            filepath: '/path/to/video1.mp4',
-            category: 'Category 1',
-            transcript: 'This is the transcript for video 1',
-            accessGroup: 'Group 1',
-        },
-        {
-            title: 'Video 2',
-            tags: ['tag3', 'tag4'],
-            filepath: '/path/to/video2.mp4',
-            category: 'Category 2',
-            transcript: 'This is the transcript for video 2',
-            accessGroup: 'Group 2',
-        },
-        {
-            title: 'Video 3',
-            tags: ['tag5', 'tag6'],
-            filepath: '/path/to/video3.mp4',
-            category: 'Category 3',
-            transcript: 'This is the transcript for video 3',
-            accessGroup: 'Group 3',
-        },
-    ];
-
-    return (
-        <main>
-        <Navbar></Navbar>
-        <TableVideos></TableVideos>
-        </main>
-    );
+async function getVideos() {
+  return [
+    {
+      title: "The History of JavaScript",
+      transcript: "A transcript of the video",
+      category: "JavaScript",
+      tags: ["JavaScript", "History"],
+      date: "2021-10-01",
+      file: "https://example.com/video.mp4",
+    access: "Public",
+    },
+    {
+        title: "The History of JavaScript",
+        transcript: "A transcript of the video",
+        category: "JavaScript",
+        tags: ["JavaScript", "History"],
+        date: "2021-10-01",
+        file: "https://example.com/video.mp4",
+      access: "Public",
+      }
+  ]
 }
+
+export default async function AdminDashboard() {
+    const data = await getVideos()
+   
+    return (
+      <div className="container mx-auto py-10">
+        <Navbar />
+        <DataTable columns={columns} data={data} />
+      </div>
+    )
+  }
+
