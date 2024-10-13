@@ -11,38 +11,38 @@ import { video_columns } from "@/components/admin/video_columns";
 import { DataTableVideo } from "@/components/admin/video-table";
 import { DataTableCategories } from "@/components/admin/categories-table";
 
-async function getData() {
-  const res = await fetch("http://127.0.0.1:8000/cms/dashboard/user");
+// async function getData() {
+//   const res = await fetch("http://127.0.0.1:8000/cms/dashboard/user");
+//     const data = await res.json();
+//     return data;
+// }
+
+async function getCSRFToken() {
+    console.log("csrf token being called")
+    const res = await fetch("http://localhost:8080/accounts/api/csrf", {
+        method: "GET",
+        credentials: "include",
+    });
     const data = await res.json();
-    return data;
+    return data["csrfToken"];
 }
 
-// async function getCSRFToken() {
-//     console.log("csrf token being called")
-//     const res = await fetch("http://localhost:8080/accounts/api/csrf", {
-//         method: "GET",
-//         credentials: "include",
-//     });
-//     const data = await res.json();
-//     return data["csrfToken"];
-// }
-
-// async function getData() {
-//     console.log("get data being called")
-//     const token = await getCSRFToken();
-//   const res = await fetch("http://127.0.0.1:8080/cms/dashboard/admin",
-//     {
-//       method: "GET",
-//       credentials: "include",
-//       headers: {
-//         "X-CSRFToken": token,
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   )
-//   const data = await res.json()
-//   return data
-// }
+async function getData() {
+    console.log("get data being called")
+    const token = await getCSRFToken();
+  const res = await fetch("http://127.0.0.1:8080/cms/dashboard/admin",
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "X-CSRFToken": token,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+  const data = await res.json()
+  return data
+}
 
 export default async function AdminDashboard() {
     const data = await getData();
@@ -75,4 +75,3 @@ export default async function AdminDashboard() {
       </div>
     )
   }
-
