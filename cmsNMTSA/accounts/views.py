@@ -52,14 +52,13 @@ def register_user(request):
         profile.save()
         if data.get("role") == "consumer":
             access_group = AccessGroup.objects.get(name="consumer")
-        elif data.get("role") == "caregiver":
+        else:
             access_group = AccessGroup.objects.get(name="caregiver")
         access_group.users.add(new_user)
         access_group.save()
 
         login(request, new_user)
         return Response({"message":"registration complete"}, status.HTTP_200_OK)
-
     else:
         return render(request, "sign_up.html")
 
