@@ -1,5 +1,4 @@
 import uuid
-from email.headerregistry import Group
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -12,11 +11,12 @@ from django.contrib.auth.models import User, Group
 from contentManagementPortal.AI.textClassifierLlama3 import classify_text
 from contentManagementPortal.AI.videoTranscriber import get_transcripts
 from docx import Document
+import PyPDF2
 # Create your views here.
 
 @api_view(["GET"])
 def load_client_dashboard(request):
-    user_groups = Group.objects.get(users=request.user.id)
+    user_groups = AccessGroup.objects.get(users=request.user.id)
     videos = VideoContent.objects.filter(access_groups=user_groups.id).order_by["-id"]
     articles = Article.objects.filter(access_groups=user_groups.id).order_by["-id"]
     vid_serializer = VideosLoadSerializer(videos, many=True)
@@ -37,7 +37,7 @@ def load_admin_dashboard(request):
         'videos': vid_serializer.data,
         'articles': article_serializer.data,
         'users': User.objects.all(),
-        'groups': Group.objects.all()
+        'groups': AccessGroup.objects.all()
     }
     return Response(data, status=status.HTTP_200_OK)
 
@@ -49,7 +49,7 @@ def load_admin_dashboard(request):
         articles = list(chain(Article.objects.filter(title=query), Article.objects.filter(tags__icontains=query), Article.objects.filter(category__name__icontains=query)))
 
     else:
-        group = Group.objects.get(users=request.user)
+        group = AccessGroup.objects.get(users=request.user)
         videos = list(
             chain(VideoContent.objects.filter(title=query, access_groups=group), VideoContent.objects.filter(tags__icontains=query, access_groups=group),
                   VideoContent.objects.filter(category__name__icontains=query, access_groups=group)))
@@ -71,7 +71,7 @@ def filter_content(request, query):'''
 @api_view(["POST", "GET"])
 @parser_classes([MultiPartParser, FormParser])
 def create_video(request):
-    user_group = Group.objects.get(users=request.user)
+    user_group = AccessGroup.objects.get(users=request.user)
     if user_group == "admin" or user_group == "private":
         if request.method == "POST":
             form_data = json.loads(request.body)
@@ -99,7 +99,7 @@ def create_video(request):
 @api_view(["POST", "GET"])
 @parser_classes([MultiPartParser, FormParser])
 def create_article(request):
-    user_group = Group.objects.get(users=request.user)
+    user_group = AccessGroup.objects.get(users=request.user)
     if user_group == "admin" or user_group == "private":
         if request.method == "POST":
             form_data = json.loads(request.body)
@@ -108,7 +108,13 @@ def create_article(request):
                 article = request.FILES.get('article')
                 if not article:
                     return Response({"error": "No article file provided"}, status=status.HTTP_400_BAD_REQUEST)
-                article_content = Document(article)
+                ext = filename.split('.')[-1]
+                if ext == "docx":
+                    article_content = Document(article)
+                elif ext == "pdf":
+                    reader = PyPDF2.PdfFileReader(article)
+                    num_pages = reader.numPages
+                    article_content = " ".join([reader.getPage(page_num).extract_text() for page_num in range(num_pages)])
                 content = " ".join([para.text for para in article_content.paragraphs])
                 llm_data = classify_text(content)
                 category = Category.objects.get(name=llm_data.get("category"))
