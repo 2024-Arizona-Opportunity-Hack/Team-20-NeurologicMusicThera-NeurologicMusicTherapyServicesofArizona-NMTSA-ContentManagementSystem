@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from contentManagementPortal.models import AccessGroup
 from rest_framework.response import Response
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -48,13 +50,15 @@ def register_user(request):
         profile = UserProfile.objects.create(user=new_user)
         profile.profile_pic = profile_pic
         profile.save()
-
-        consumer_access = AccessGroup.objects.get(name="consumer")
-        consumer_access.users.add(new_user)
-        consumer_access.save()
+        if data.get("role") == "consumer":
+            access_group = AccessGroup.objects.get(name="consumer")
+        elif data.get("role") == "caregiver":
+            access_group = AccessGroup.objects.get(name="caregiver")
+        access_group.users.add(new_user)
+        access_group.save()
 
         login(request, new_user)
-        return Response({"message":"registration complete", status.HTTP_200_OK})
+        return Response({"message":"registration complete"}, status.HTTP_200_OK)
 
     else:
         return render(request, "sign_up.html")
@@ -64,3 +68,8 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request.user)
     return Response({"message":"user logged out"}, status=status.HTTP_200_OK)
+
+
+def load_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrfToken': csrf_token})

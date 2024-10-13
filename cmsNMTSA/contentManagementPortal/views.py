@@ -41,32 +41,6 @@ def load_admin_dashboard(request):
     }
     return Response(data, status=status.HTTP_200_OK)
 
-'''def search_content(request, query):
-    group = AccessGroup.objects.get(users=request.user)
-
-    if group.group_name == "admin":
-        videos = list(chain(VideoContent.objects.filter(title=query), VideoContent.objects.filter(tags__icontains=query), VideoContent.objects.filter(category__name__icontains=query)))
-        articles = list(chain(Article.objects.filter(title=query), Article.objects.filter(tags__icontains=query), Article.objects.filter(category__name__icontains=query)))
-
-    else:
-        group = AccessGroup.objects.get(users=request.user)
-        videos = list(
-            chain(VideoContent.objects.filter(title=query, access_groups=group), VideoContent.objects.filter(tags__icontains=query, access_groups=group),
-                  VideoContent.objects.filter(category__name__icontains=query, access_groups=group)))
-        articles = list(chain(Article.objects.filter(title=query, access_groups=group), Article.objects.filter(tags__icontains=query, access_groups=group),
-                              Article.objects.filter(category__name__icontains=query, access_groups=group)))
-
-    vid_serializer = VideosLoadSerializer(videos, many=True)
-    article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
-    data = {
-        'videos': vid_serializer.data,
-        'articles': article_serializer.data
-    }
-    return Response(data)
-
-
-def filter_content(request, query):'''
-
 
 @api_view(["POST", "GET"])
 @parser_classes([MultiPartParser, FormParser])
