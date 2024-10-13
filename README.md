@@ -9,7 +9,6 @@
 ## Creator
 @Aaditya Jindal (on Slack)
 ## Team "Team-20" - Team name: Team ByteForce 
-- Ansh (https://github.com/ansht9)
 - Ayaan Panda (https://github.com/ayaanp-dev)
 - Aryan Patel (https://github.com/mmuskaryyone)
 - Lukas (https://github.com/Nerozd)
