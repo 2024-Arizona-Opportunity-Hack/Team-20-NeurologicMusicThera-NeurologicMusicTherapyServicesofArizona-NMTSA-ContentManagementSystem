@@ -17,8 +17,8 @@ from docx import Document
 @api_view(["GET"])
 def load_client_dashboard(request):
     user_groups = Group.objects.get(users=request.user.id)
-    videos = VideoContent.objects.filter(access_groups=user_groups.id)
-    articles = Article.objects.filter(access_groups=user_groups.id)
+    videos = VideoContent.objects.filter(access_groups=user_groups.id).order_by["-id"]
+    articles = Article.objects.filter(access_groups=user_groups.id).order_by["-id"]
     vid_serializer = VideosLoadSerializer(videos, many=True)
     article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
     data = {
@@ -29,8 +29,8 @@ def load_client_dashboard(request):
 
 @api_view(["GET"])
 def load_admin_dashboard(request):
-    videos = VideoContent.objects.all()
-    articles = Article.objects.all()
+    videos = VideoContent.objects.all().order_by["-id"]
+    articles = Article.objects.all().order_by["-id"]
     vid_serializer = VideosLoadSerializer(videos, many=True)
     article_serializer: ArticleLoadSerializer = ArticleLoadSerializer(articles, many=True)
     data = {
