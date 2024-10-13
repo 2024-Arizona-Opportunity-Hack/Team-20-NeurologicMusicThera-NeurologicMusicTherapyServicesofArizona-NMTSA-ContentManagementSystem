@@ -2,7 +2,7 @@ import torch
 from transformers import pipeline
 from huggingface_hub import login
 import json
-from contentManagement.models import Category
+from ..models import Category
 
 login(token="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")
 
