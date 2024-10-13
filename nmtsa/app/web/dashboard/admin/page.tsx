@@ -1,16 +1,15 @@
-import { Video, columns } from "@/components/admin/columns";
-import { articlecolumns } from "@/components/admin/articlecolumns";
-import { DataTable } from "@/components/admin/data-table";
+import { article_collumns } from "@/components/admin/article_columns";
 import { Navbar } from "@/components/Navbar";
-import DataTableArticles from "@/components/admin/TableArticles";
+import { DataTableArticle } from "@/components/admin/article-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableUsers } from "@/components/admin/TableUsers";
+import { DataTableUser } from "@/components/admin/users-table";
 import { userscolumns } from "@/components/admin/userscolumns";
-import { DataTableGroups } from "@/components/admin/TableGroups";
+import { DataTableGroups } from "@/components/admin/groups-table";
 import { groupcolumns } from "@/components/admin/groupcolumns";
 import { category_collumns } from "@/components/admin/categories-columns";
 import { video_columns } from "@/components/admin/video_columns";
 import { DataTableVideo } from "@/components/admin/video-table";
+import { DataTableCategories } from "@/components/admin/categories-table";
 
 async function getData() {
   const res = await fetch("http://127.0.0.1:8000/cms/dashboard/user");
@@ -63,7 +62,7 @@ export default async function AdminDashboard() {
         </section>
         <section>
         <h1 className="text-3xl font-semibold">Mange Articles</h1>
-        <DataTableArticle columns={articlecolumns} data={data_articles} />
+        <DataTableArticle columns={article_collumns} data={data_articles} />
         </section>
         <section>
         <h1 className="text-3xl font-semibold">Mange Users</h1>
