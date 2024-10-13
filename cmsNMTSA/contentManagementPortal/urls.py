@@ -1,10 +1,9 @@
 from django.urls import path, include
 from .views import *
 
-urlpatterns = [
-    path('dashboard/consumer', fetch_consumer_videos, name="getConsumerVideos"),
-    path('dashboard/caregiver', fetch_caregiver_videos, name="getCareGiverVideos"),
-    path('dashboard/admin', )
-    path('cms/', include(contentManagementPortal.urls)),
+app_name = "contentManagementPortal"
 
+urlpatterns = [
+    path('dashboard/user', load_client_dashboard , name="loadClientDashboard"),
+    path('dashboard/admin', load_admin_dashboard , name="loadAdminDashboard"),
 ]
