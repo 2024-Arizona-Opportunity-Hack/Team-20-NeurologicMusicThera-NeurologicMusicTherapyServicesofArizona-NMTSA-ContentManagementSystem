@@ -61,7 +61,7 @@ One of the accomplishemnts that we are proud of is that we managed to integrate 
 Some tasks that we learend was how to implement different AI models using HuggingFace within the backend of a software. Furthermore, we gained a deeper understanding of how we can use Tailwind, Next.js, shadCN to make good looking software. Finally, we learned how to use Django to make a backend functional and render Rest APIs to serve the front end.
 
 ## What is next for our Content Management Software?
-Eventually, we plan to integrate Google Drive into our software to manage files within Drive as well as normal files. Furthermore, we plan on implementing a chatbot that allows the user to chat with the files on the CMS for instant insights on widespread data. 
+Eventually, we plan to integrate Google Drive into our software to manage files within Drive as well as normal files. Furthermore, we plan on implementing a chatbot that allows the user to chat with the files on the CMS for instant insights on widespread data. We also plan on making a request link feature to more easily add caretakers into the software.
 
 
 ## Getting Started
