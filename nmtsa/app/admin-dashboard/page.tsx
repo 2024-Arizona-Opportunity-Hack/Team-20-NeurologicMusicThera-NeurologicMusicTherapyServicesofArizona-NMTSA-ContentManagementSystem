@@ -1,37 +1,38 @@
 import { Video, columns } from "@/components/admin/columns";
+import { articlecolumns } from "@/components/admin/articlecolumns";
 import { DataTable } from "@/components/admin/data-table";
 import { Navbar } from "@/components/Navbar";
+import { DataTableArticles } from "@/components/admin/TableArticles";
+import { ColumnDef } from "@tanstack/react-table";
 
 async function getVideos() {
-  return [
-    {
-      title: "The History of JavaScript",
-      transcript: "A transcript of the video",
-      category: "JavaScript",
-      tags: ["JavaScript", "History"],
-      date: "2021-10-01",
-      file: "https://example.com/video.mp4",
-    access: "Public",
-    },
-    {
-        title: "The History of JavaScript",
-        transcript: "A transcript of the video",
-        category: "JavaScript",
-        tags: ["JavaScript", "History"],
-        date: "2021-10-01",
-        file: "https://example.com/video.mp4",
-      access: "Public",
-      }
-  ]
+  const res = await fetch("http://127.0.0.1:8000/cms/dashboard/admin")
+  const data = await res.json()
+  return data["videos"]
+}
+
+async function getArticles() {
+    const res = await fetch("http://127.0.0.1:8000/cms/dashboard/admin")
+    const data = await res.json()
+    return data["articles"]
 }
 
 export default async function AdminDashboard() {
-    const data = await getVideos()
-   
+    const data_videos = await getVideos()
+   const data_articles = await getArticles()
+
     return (
       <div className="container mx-auto py-10">
         <Navbar />
-        <DataTable columns={columns} data={data} />
+        <h1 className="text-5xl text-center font-bold">Administrator Dashboard</h1>
+        <section>
+        <h1 className="text-3xl font-semibold">Mange Videos</h1>
+        <DataTable columns={columns} data={data_videos} />
+        </section>
+        <section>
+        <h1 className="text-3xl font-semibold">Mange Articles</h1>
+        <DataTableArticles columns={articlecolumns as ColumnDef<{ title: string; category: string; tags: string[]; date: string; file: string; access: string; }, unknown>[]} data={data_articles} />
+        </section>
       </div>
     )
   }
