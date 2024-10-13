@@ -2,29 +2,26 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export type Video = {
     title: string;
-    transcript: string;
     category: string;
-    tags: Array<string>;
+    tags: string;
     date: string;
-    file: string;
-    access: string;
+    path: string;
+    thumbnail: string;
+    id: string;
+    access_groups: Array<string>;
 };
 
-export const columns: Array<ColumnDef<Video>> = [
+export const video_columns: Array<ColumnDef<Video>> = [
     {
         header: "Title",
         accessorKey: "title",
-    },
-    {
-        header: "Transcript",
-        accessorKey: "transcript",
     },
     {
         header: "Category",
         accessorKey: "category",
     },
     {
-        header: "Tags",
+        header: "tags",
         accessorKey: "tags",
     },
     {
@@ -32,12 +29,16 @@ export const columns: Array<ColumnDef<Video>> = [
         accessorKey: "date",
     },
     {
+        header: "Path",
+        accessorKey: "path",
+    },
+    {
         header: "File",
         accessorKey: "file",
     },
     {
-        header: "Access",
-        accessorKey: "access",
+        header: "Access Groups",
+        accessorKey: "access_groups",
     },
 ];
 

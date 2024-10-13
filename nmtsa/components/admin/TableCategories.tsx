@@ -36,9 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-type User = {
-    first: string;
-    last: string;
-    email: string;
-    groups: string;
+type Category = {
+  id: number,
+  name: string
 }
