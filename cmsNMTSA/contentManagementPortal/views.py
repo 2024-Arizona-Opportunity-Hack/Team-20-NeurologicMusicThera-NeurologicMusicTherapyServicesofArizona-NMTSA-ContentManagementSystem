@@ -61,7 +61,7 @@ def update_video(request):
             VideoContent.objects.get(id=obj_id).delete()
             return Response({"message":"video deleted"}, status=status.HTTP_204_NO_CONTENT)
         except VideoContent.DoesNotExist:
-            return Response({"message":"video not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"video not found"}, status=status.HTTP_404_NOT_FOUND)
 
     else:
         data = json.loads(request.body)
@@ -84,7 +84,7 @@ def update_video(request):
             vid.save()
             return Response({"message":"video updated"}, status=status.HTTP_200_OK)
         except VideoContent.DoesNotExist:
-            return Response({"message": "video not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "video not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["PUT", "DELETE"])
@@ -96,7 +96,7 @@ def update_article(request):
             Article.objects.get(id=obj_id).delete()
             return Response({"message":"article deleted"}, status=status.HTTP_204_NO_CONTENT)
         except VideoContent.DoesNotExist:
-            return Response({"message":"article not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"article not found"}, status=status.HTTP_404_NOT_FOUND)
 
     else:
         data = json.loads(request.body)
@@ -119,7 +119,7 @@ def update_article(request):
             article.save()
             return Response({"message":"article updated"}, status=status.HTTP_200_OK)
         except VideoContent.DoesNotExist:
-            return Response({"message": "article not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "article not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(["PUT", "DELETE", "POST"])
 def update_category(request):
@@ -129,7 +129,7 @@ def update_category(request):
             Category.objects.get(name=cat_name).delete()
             return Response({"message": "category deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
-            return Response({"message": "category not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "category not found"}, status=status.HTTP_404_NOT_FOUND)
     elif request.method == "PUT":
         try:
             data = json.loads(request.body)
@@ -140,7 +140,7 @@ def update_category(request):
             category.save()
             return Response({"message": "category edited"}, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
-            return Response({"message":"category not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"category not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(["POST"])
 def create_category(request):
@@ -215,3 +215,22 @@ def create_article(request):
             return render(request, "create_video.html")
     return Response(json.dumps({"error": "You are not authorized!"}), status=status.HTTP_403_FORBIDDEN)
 
+@api_view(["GET"])
+def load_video(request):
+    try:
+        data = json.loads(request.body)
+        user_group = AccessGroup.objects.users(request.user)
+        vid = VideoContent.objects.get(id = data.get('id'), access_groups=user_group)
+        return Response({"url": vid.video_file}, status=status.HTTP_200_OK)
+    except VideoContent.DoesNotExist:
+        return Response({"message":"video not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(["GET"])
+def load_article(request):
+    try:
+        data = json.loads(request.body)
+        user_group = AccessGroup.objects.users(request.user)
+        article = Article.objects.get(id = data.get('id'), access_groups=user_group)
+        return Response({"url": article.article}, status=status.HTTP_200_OK)
+    except VideoContent.DoesNotExist:
+        return Response({"message":"article not found"}, status=status.HTTP_404_NOT_FOUND)
